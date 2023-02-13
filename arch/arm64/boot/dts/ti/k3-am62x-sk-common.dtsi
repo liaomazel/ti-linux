@@ -133,7 +133,7 @@
 		regulator-boot-on;
 		enable-active-high;
 		vin-supply = <&vcc_3v3_sys>;
-		gpio = <&exp1 3 GPIO_ACTIVE_HIGH>;
+		// gpio = <&exp1 3 GPIO_ACTIVE_HIGH>;
 	};
 
 	vdd_sd_dv: regulator-4 {
@@ -146,7 +146,7 @@
 		regulator-max-microvolt = <3300000>;
 		regulator-boot-on;
 		vin-supply = <&vcc_5v0>;
-		gpios = <&main_gpio0 31 GPIO_ACTIVE_HIGH>;
+		// gpios = <&main_gpio0 31 GPIO_ACTIVE_HIGH>;
 		states = <1800000 0x0>,
 			 <3300000 0x1>;
 	};
@@ -183,18 +183,18 @@
 			"MIC3R",		"Microphone Jack",
 			"Microphone Jack",	"Mic Bias";
 		simple-audio-card,format = "dsp_b";
-		simple-audio-card,bitclock-master = <&sound_master>;
-		simple-audio-card,frame-master = <&sound_master>;
+		// simple-audio-card,bitclock-master = <&sound_master>;
+		// simple-audio-card,frame-master = <&sound_master>;
 		simple-audio-card,bitclock-inversion;
 
 		simple-audio-card,cpu {
 			sound-dai = <&mcasp1>;
 		};
 
-		sound_master: simple-audio-card,codec {
-			sound-dai = <&tlv320aic3106>;
-			clocks = <&tlv320_mclk>;
-		};
+		// sound_master: simple-audio-card,codec {
+		// 	sound-dai = <&tlv320aic3106>;
+		// 	clocks = <&tlv320_mclk>;
+		// };
 	};
 
 	leds {
@@ -202,7 +202,7 @@
 
 		led-0 {
 			label = "am62-sk:green:heartbeat";
-			pwms = <&main_pwm7 0 7812500 0>;
+			// pwms = <&main_pwm7 0 7812500 0>;
 			max-brightness = <255>;
 			linux,default-trigger = "heartbeat";
 			function = LED_FUNCTION_HEARTBEAT;
@@ -480,7 +480,7 @@
 &wkup_i2c0 {
 	status = "disabled";
 };
-
+/*
 &main_i2c0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&main_i2c0_pins_default>;
@@ -506,7 +506,49 @@
 		};
 	};
 };
+*/
+&main_i2c0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&main_i2c0_pins_default>;
+	clock-frequency = <400000>;
+	status = "disabled";
 
+	sii9022: sii9022@3b {
+		#sound-dai-cells = <0>;
+		compatible = "sil,sii9022";
+		reg = <0x3b>;
+
+		clocks = <&hdmi_mstrclk>;
+		clock-names = "mclk";
+
+		interrupt-parent = <&exp1>;
+		interrupts = <16 IRQ_TYPE_EDGE_FALLING>;
+
+		sil,i2s-data-lanes = < 0 >;
+
+		ports {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			port@0 {
+				reg = <0>;
+
+				sii9022_in: endpoint {
+					remote-endpoint = <&dpi1_out>;
+				};
+			};
+
+			port@1 {
+				reg = <1>;
+
+				sii9022_out: endpoint {
+					remote-endpoint = <&hdmi_connector_in>;
+				};
+			};
+		};
+	};
+};
+/*
 &main_i2c1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&main_i2c1_pins_default>;
@@ -578,15 +620,23 @@
 		#sound-dai-cells = <0>;
 		compatible = "ti,tlv320aic3106";
 		reg = <0x1b>;
-		ai3x-micbias-vg = <1>;		/* 2.0V */
+		ai3x-micbias-vg = <1>;		// 2.0V
 		status = "okay";
 
-		/* Regulators */
+		// Regulators
 		AVDD-supply = <&vcc_3v3_sys>;
 		IOVDD-supply = <&vcc_3v3_sys>;
 		DRVDD-supply = <&vcc_3v3_sys>;
 		DVDD-supply = <&vcc_1v8>;
 	};
+};
+*/
+
+&main_i2c1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&main_i2c1_pins_default>;
+	clock-frequency = <100000>;
+	status = "disabled";	
 };
 
 &main_i2c2 {
@@ -623,13 +673,13 @@
 	#size-cells = <0>;
 	usb-role-switch;
 
-	port@1 {
+	/*port@1 {
 		reg = <1>;
 
 		typec_hs: endpoint {
 			remote-endpoint = <&usb_con_hs>;
 		};
-	};
+	};*/
 };
 
 &usb1 {
@@ -695,7 +745,7 @@
 };
 
 &mcasp1 {
-	status = "okay";
+	status = "disabled";
 	#sound-dai-cells = <0>;
 
 	pinctrl-names = "default";

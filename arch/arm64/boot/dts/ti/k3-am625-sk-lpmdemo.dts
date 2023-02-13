@@ -119,9 +119,9 @@
 	status = "disabled";
 };
 
-&tlv320_mclk {
-	status = "disabled";
-};
+// &tlv320_mclk {
+// 	status = "disabled";
+// };
 
 &codec_audio {
 	status = "disabled";
@@ -139,6 +139,6 @@
 	status = "disabled";
 };
 
-&tlv320aic3106 {
-	status = "disabled";
-};
+// &tlv320aic3106 {
+// 	status = "disabled";
+// };
