@@ -216,6 +216,11 @@ config MICROCHIP_T1_PHY
 	help
 	  Supports the LAN87XX PHYs.
 
+config MOTORCOMM_PHY
+	tristate "Motorcomm PHYs"
+	help
+	  Supports the YT8010, YT8510, YT8511, YT8512, YT8531 PHYs.
+
 config MICROSEMI_PHY
 	tristate "Microsemi PHYs"
 	depends on MACSEC || MACSEC=n
