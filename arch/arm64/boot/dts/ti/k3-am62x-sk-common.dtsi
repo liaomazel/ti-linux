@@ -35,7 +35,7 @@
 	memory@80000000 {
 		device_type = "memory";
 		/* 2G RAM */
-		reg = <0x00000000 0x80000000 0x00000000 0x80000000>;
+		reg = <0x00000000 0x80000000 0x00000000 0x40000000>;
 
 	};
 
@@ -136,20 +136,20 @@
 		// gpio = <&exp1 3 GPIO_ACTIVE_HIGH>;
 	};
 
-	vdd_sd_dv: regulator-4 {
-		/* Output of TLV71033 */
-		compatible = "regulator-gpio";
-		regulator-name = "tlv71033";
-		pinctrl-names = "default";
-		pinctrl-0 = <&vdd_sd_dv_pins_default>;
-		regulator-min-microvolt = <1800000>;
-		regulator-max-microvolt = <3300000>;
-		regulator-boot-on;
-		vin-supply = <&vcc_5v0>;
-		// gpios = <&main_gpio0 31 GPIO_ACTIVE_HIGH>;
-		states = <1800000 0x0>,
-			 <3300000 0x1>;
-	};
+	// vdd_sd_dv: regulator-4 {
+	// 	/* Output of TLV71033 */
+	// 	compatible = "regulator-gpio";
+	// 	regulator-name = "tlv71033";
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&vdd_sd_dv_pins_default>;
+	// 	regulator-min-microvolt = <1800000>;
+	// 	regulator-max-microvolt = <3300000>;
+	// 	regulator-boot-on;
+	// 	vin-supply = <&vcc_5v0>;
+	// 	// gpios = <&main_gpio0 31 GPIO_ACTIVE_HIGH>;
+	// 	states = <1800000 0x0>,
+	// 		 <3300000 0x1>;
+	// };
 
 	vcc_1v8: regulator-7 {
 		/* output of TPS6282518DMQ */
@@ -185,11 +185,11 @@
 		simple-audio-card,format = "dsp_b";
 		// simple-audio-card,bitclock-master = <&sound_master>;
 		// simple-audio-card,frame-master = <&sound_master>;
-		simple-audio-card,bitclock-inversion;
+		// simple-audio-card,bitclock-inversion;
 
-		simple-audio-card,cpu {
-			sound-dai = <&mcasp1>;
-		};
+		// simple-audio-card,cpu {
+		// 	sound-dai = <&mcasp1>;
+		// };
 
 		// sound_master: simple-audio-card,codec {
 		// 	sound-dai = <&tlv320aic3106>;
@@ -210,30 +210,30 @@
 		};
 	};
 
-	main_pwm7: dmtimer-main-pwm-7 {
-		pinctrl-0 = <&usr_led_pins_default>;
-		pinctrl-names = "default";
-		compatible = "ti,omap-dmtimer-pwm";
-		#pwm-cells = <3>;
-		ti,timers = <&main_timer7>;
-	};
+	// main_pwm7: dmtimer-main-pwm-7 {
+	// 	pinctrl-0 = <&usr_led_pins_default>;
+	// 	pinctrl-names = "default";
+	// 	compatible = "ti,omap-dmtimer-pwm";
+	// 	#pwm-cells = <3>;
+	// 	ti,timers = <&main_timer7>;
+	// };
 
-	hdmi_mstrclk: hdmi-mstrclk {
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <12288000>;
-	};
+	// hdmi_mstrclk: hdmi-mstrclk {
+	// 	compatible = "fixed-clock";
+	// 	#clock-cells = <0>;
+	// 	clock-frequency = <12288000>;
+	// };
 
-	hdmi: connector {
-		compatible = "hdmi-connector";
-		label = "hdmi";
-		type = "a";
-		port {
-			hdmi_connector_in: endpoint {
-				remote-endpoint = <&sii9022_out>;
-			};
-		};
-	};
+	// hdmi: connector {
+	// 	compatible = "hdmi-connector";
+	// 	label = "hdmi";
+	// 	type = "a";
+	// 	port {
+	// 		hdmi_connector_in: endpoint {
+	// 			remote-endpoint = <&sii9022_out>;
+	// 		};
+	// 	};
+	// };
 };
 
 &main_pmx0 {
@@ -255,13 +255,6 @@
 		pinctrl-single,pins = <
 			AM62X_IOPAD(0x1d0, PIN_INPUT_PULLUP, 1) /* (A15) UART0_CTSn.I2C3_SCL */
 			AM62X_IOPAD(0x1d4, PIN_INPUT_PULLUP, 1) /* (B15) UART0_RTSn.I2C3_SDA */
-		>;
-	};
-
-	main_i2c2_pins_default: main-i2c2-pins-default {
-		pinctrl-single,pins = <
-			AM62X_IOPAD(0x0b0, PIN_INPUT_PULLUP, 1) /* (K22) GPMC0_CSn2.I2C2_SCL */
-			AM62X_IOPAD(0x0b4, PIN_INPUT_PULLUP, 1) /* (K24) GPMC0_CSn3.I2C2_SDA */
 		>;
 	};
 
@@ -300,19 +293,7 @@
 			AM62X_IOPAD(0x110, PIN_INPUT, 0) /* (C25) MMC2_DAT1 */
 			AM62X_IOPAD(0x10c, PIN_INPUT, 0) /* (E23) MMC2_DAT2 */
 			AM62X_IOPAD(0x108, PIN_INPUT, 0) /* (D24) MMC2_DAT3 */
-			AM62X_IOPAD(0x11c, PIN_INPUT, 0) /* (#N/A) MMC2_CLKB */
-		>;
-	};
-
-	main_wlirq_pins_default: main-wlirq-pins-default {
-		pinctrl-single,pins = <
-			AM62X_IOPAD(0x128, PIN_INPUT, 7) /* (B23) MMC2_SDWP.GPIO0_72 */
-		>;
-	};
-
-	usr_led_pins_default: usr-led-pins-default {
-		pinctrl-single,pins = <
-			AM62X_IOPAD(0x244, PIN_OUTPUT, 2) /* (C17) MMC1_SDWP.TIMER_IO7 */
+			AM62X_IOPAD(0x124, PIN_INPUT, 0) /* (A23) MMC2_SDCD */
 		>;
 	};
 
@@ -370,6 +351,7 @@
 			AM62X_IOPAD(0x024, PIN_INPUT, 0) /* (H25) OSPI0_D6 */
 			AM62X_IOPAD(0x028, PIN_INPUT, 0) /* (J22) OSPI0_D7 */
 			AM62X_IOPAD(0x008, PIN_INPUT, 0) /* (J24) OSPI0_DQS */
+			AM62X_IOPAD(0x038, PIN_INPUT, 2) /* (J24) OSPI0_CSn3.OSPI0_ECC_FAIL */
 		>;
 	};
 
@@ -402,7 +384,7 @@
 			AM62X_IOPAD(0x006c, PIN_OUTPUT, 1) /* (T22) GPMC0_AD12.VOUT0_DATA20 */
 			AM62X_IOPAD(0x0070, PIN_OUTPUT, 1) /* (T24) GPMC0_AD13.VOUT0_DATA21 */
 			AM62X_IOPAD(0x0074, PIN_OUTPUT, 1) /* (U25) GPMC0_AD14.VOUT0_DATA22 */
-			AM62X_IOPAD(0x0078, PIN_OUTPUT, 1) /* (U24) GPMC0_AD15.VOUT0_DATA23 */
+			AM62X_IOPAD(0x0078, PIN_OUTPUT, 1) /* (U24) GPMC0_AD15.VOUT0_DATA23 display*/
 		>;
 	};
 
@@ -513,40 +495,40 @@
 	clock-frequency = <400000>;
 	status = "disabled";
 
-	sii9022: sii9022@3b {
-		#sound-dai-cells = <0>;
-		compatible = "sil,sii9022";
-		reg = <0x3b>;
+	// sii9022: sii9022@3b {
+	// 	#sound-dai-cells = <0>;
+	// 	compatible = "sil,sii9022";
+	// 	reg = <0x3b>;
 
-		clocks = <&hdmi_mstrclk>;
-		clock-names = "mclk";
+	// 	clocks = <&hdmi_mstrclk>;
+	// 	clock-names = "mclk";
 
-		// interrupt-parent = <&exp1>;
-		interrupts = <16 IRQ_TYPE_EDGE_FALLING>;
+	// 	// interrupt-parent = <&exp1>;
+	// 	interrupts = <16 IRQ_TYPE_EDGE_FALLING>;
 
-		sil,i2s-data-lanes = < 0 >;
+	// 	sil,i2s-data-lanes = < 0 >;
 
-		ports {
-			#address-cells = <1>;
-			#size-cells = <0>;
+	// 	ports {
+	// 		#address-cells = <1>;
+	// 		#size-cells = <0>;
 
-			port@0 {
-				reg = <0>;
+	// 		port@0 {
+	// 			reg = <0>;
 
-				sii9022_in: endpoint {
-					remote-endpoint = <&dpi1_out>;
-				};
-			};
+	// 			sii9022_in: endpoint {
+	// 				remote-endpoint = <&dpi1_out>;
+	// 			};
+	// 		};
 
-			port@1 {
-				reg = <1>;
+	// 		port@1 {
+	// 			reg = <1>;
 
-				sii9022_out: endpoint {
-					remote-endpoint = <&hdmi_connector_in>;
-				};
-			};
-		};
-	};
+	// 			sii9022_out: endpoint {
+	// 				remote-endpoint = <&hdmi_connector_in>;
+	// 			};
+	// 		};
+	// 	};
+	// };
 };
 /*
 &main_i2c1 {
@@ -633,9 +615,6 @@
 */
 
 &main_i2c1 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&main_i2c1_pins_default>;
-	clock-frequency = <400000>;
 	status = "disabled";	
 };
 
@@ -666,7 +645,7 @@
 &sdhci1 {
 	/* SD/MMC */
 	vmmc-supply = <&vdd_mmc1>;
-	vqmmc-supply = <&vdd_sd_dv>;
+	// vqmmc-supply = <&vdd_sd_dv>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&main_mmc1_pins_default>;
 	ti,driver-strength-ohm = <50>;
@@ -740,13 +719,13 @@
 	#size-cells = <0>;
 
 	/* VP2: DPI Output */
-	port@1 {
-		reg = <1>;
+	// port@1 {
+	// 	reg = <1>;
 
-		dpi1_out: endpoint {
-			remote-endpoint = <&sii9022_in>;
-		};
-	};
+	// 	dpi1_out: endpoint {
+	// 		remote-endpoint = <&sii9022_in>;
+	// 	};
+	// };
 };
 
 &mcasp0 {
@@ -755,22 +734,6 @@
 
 &mcasp1 {
 	status = "disabled";
-	#sound-dai-cells = <0>;
-
-	pinctrl-names = "default";
-	pinctrl-0 = <&main_mcasp1_pins_default>;
-
-	op-mode = <0>;          /* MCASP_IIS_MODE */
-	tdm-slots = <2>;
-
-	serial-dir = <  /* 0: INACTIVE, 1: TX, 2: RX */
-	       1 0 2 0
-	       0 0 0 0
-	       0 0 0 0
-	       0 0 0 0
-	>;
-	tx-num-evt = <32>;
-	rx-num-evt = <32>;
 };
 
 &mcasp2 {
