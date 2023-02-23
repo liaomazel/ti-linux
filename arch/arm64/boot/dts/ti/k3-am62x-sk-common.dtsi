@@ -251,10 +251,10 @@
 		>;
 	};
 
-	main_i2c1_pins_default: main-i2c1-pins-default {
+	main_i2c3_pins_default: main-i2c3-pins-default {
 		pinctrl-single,pins = <
-			AM62X_IOPAD(0x1e8, PIN_INPUT_PULLUP, 0) /* (B17) I2C1_SCL */
-			AM62X_IOPAD(0x1ec, PIN_INPUT_PULLUP, 0) /* (A17) I2C1_SDA */
+			AM62X_IOPAD(0x1d0, PIN_INPUT_PULLUP, 1) /* (A15) UART0_CTSn.I2C3_SCL */
+			AM62X_IOPAD(0x1d4, PIN_INPUT_PULLUP, 1) /* (B15) UART0_RTSn.I2C3_SDA */
 		>;
 	};
 
@@ -521,7 +521,7 @@
 		clocks = <&hdmi_mstrclk>;
 		clock-names = "mclk";
 
-		interrupt-parent = <&exp1>;
+		// interrupt-parent = <&exp1>;
 		interrupts = <16 IRQ_TYPE_EDGE_FALLING>;
 
 		sil,i2s-data-lanes = < 0 >;
@@ -635,7 +635,7 @@
 &main_i2c1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&main_i2c1_pins_default>;
-	clock-frequency = <100000>;
+	clock-frequency = <400000>;
 	status = "disabled";	
 };
 
@@ -644,7 +644,16 @@
 };
 
 &main_i2c3 {
-	status = "disabled";
+	pinctrl-names = "default";
+	pinctrl-0 = <&main_i2c3_pins_default>;
+	clock-frequency = <400000>;
+	status = "okay";
+
+	rtc: rtc@32 {
+		compatible = "epson,rx8025";
+		reg = <0x32>;
+		status = "okay";
+    };
 };
 
 &sdhci0 {

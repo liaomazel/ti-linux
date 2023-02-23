@@ -24,7 +24,7 @@
 		regulator-max-microvolt = <3300000>;
 		regulator-always-on;
 		vin-supply = <&vcc_3v3_sys>;
-		gpios = <&exp1 11 GPIO_ACTIVE_LOW>;
+		// gpios = <&exp1 11 GPIO_ACTIVE_LOW>;
 	};
 
 	wlan_en: regulator-6 {
@@ -35,7 +35,7 @@
 		regulator-max-microvolt = <1800000>;
 		enable-active-high;
 		vin-supply = <&wlan_lten>;
-		gpios = <&main_gpio0 71 GPIO_ACTIVE_HIGH>;
+		// gpios = <&main_gpio0 71 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&wlan_en_pins_default>;
 	};
@@ -67,34 +67,34 @@
 	};
 
 };
-&main_i2c1 {
-	exp1: gpio@22 {
-		compatible = "ti,tca6424";
-		reg = <0x22>;
-		gpio-controller;
-		#gpio-cells = <2>;
-		gpio-line-names = "GPIO_CPSW2_RST", "GPIO_CPSW1_RST",
-				   "PRU_DETECT", "MMC1_SD_EN",
-				   "VPP_LDO_EN", "EXP_PS_3V3_En",
-				   "EXP_PS_5V0_En", "EXP_HAT_DETECT",
-				   "GPIO_AUD_RSTn", "GPIO_eMMC_RSTn",
-				   "UART1_FET_BUF_EN", "WL_LT_EN",
-				   "GPIO_HDMI_RSTn", "CSI_GPIO1",
-				   "CSI_GPIO2", "PRU_3V3_EN",
-				   "HDMI_INTn", "TEST_GPIO2",
-				   "MCASP1_FET_EN", "MCASP1_BUF_BT_EN",
-				   "MCASP1_FET_SEL", "UART1_FET_SEL",
-				   "TSINT#", "IO_EXP_TEST_LED";
+// &main_i2c1 {
+// 	exp1: gpio@22 {
+// 		compatible = "ti,tca6424";
+// 		reg = <0x22>;
+// 		gpio-controller;
+// 		#gpio-cells = <2>;
+// 		gpio-line-names = "GPIO_CPSW2_RST", "GPIO_CPSW1_RST",
+// 				   "PRU_DETECT", "MMC1_SD_EN",
+// 				   "VPP_LDO_EN", "EXP_PS_3V3_En",
+// 				   "EXP_PS_5V0_En", "EXP_HAT_DETECT",
+// 				   "GPIO_AUD_RSTn", "GPIO_eMMC_RSTn",
+// 				   "UART1_FET_BUF_EN", "WL_LT_EN",
+// 				   "GPIO_HDMI_RSTn", "CSI_GPIO1",
+// 				   "CSI_GPIO2", "PRU_3V3_EN",
+// 				   "HDMI_INTn", "TEST_GPIO2",
+// 				   "MCASP1_FET_EN", "MCASP1_BUF_BT_EN",
+// 				   "MCASP1_FET_SEL", "UART1_FET_SEL",
+// 				   "TSINT#", "IO_EXP_TEST_LED";
 
-		interrupt-parent = <&main_gpio1>;
-		interrupts = <23 IRQ_TYPE_EDGE_FALLING>;
-		interrupt-controller;
-		#interrupt-cells = <2>;
+// 		interrupt-parent = <&main_gpio1>;
+// 		interrupts = <23 IRQ_TYPE_EDGE_FALLING>;
+// 		interrupt-controller;
+// 		#interrupt-cells = <2>;
 
-		pinctrl-names = "default";
-		pinctrl-0 = <&main_gpio1_ioexp_intr_pins_default>;
-	};
-};
+// 		pinctrl-names = "default";
+// 		pinctrl-0 = <&main_gpio1_ioexp_intr_pins_default>;
+// 	};
+// };
 
 &sdhci2 {
 	vmmc-supply = <&wlan_en>;
@@ -111,14 +111,14 @@
 
 	#address-cells = <1>;
 	#size-cells = <0>;
-	wlcore: wlcore@2 {
-		compatible = "ti,wl1837";
-		reg = <2>;
-		pinctrl-names = "default";
-		pinctrl-0 = <&main_wlirq_pins_default>;
-		interrupt-parent = <&main_gpio0>;
-		interrupts = <72 IRQ_TYPE_EDGE_FALLING>;
-	};
+	// wlcore: wlcore@2 {
+	// 	compatible = "ti,wl1837";
+	// 	reg = <2>;
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&main_wlirq_pins_default>;
+	// 	interrupt-parent = <&main_gpio0>;
+	// 	interrupts = <72 IRQ_TYPE_EDGE_FALLING>;
+	// };
 };
 
 &ospi0 {
