@@ -35,67 +35,49 @@
 	memory@80000000 {
 		device_type = "memory";
 		/* 2G RAM */
-		reg = <0x00000000 0x80000000 0x00000000 0x40000000>;
+		reg = <0x00000000 0x80000000 0x00000000 0x80000000>;
 
 	};
-
-	// reserved-memory {
-	// 	#address-cells = <2>;
-	// 	#size-cells = <2>;
-	// 	ranges;
-
-	// 	rtos_ipc_memory_region: ipc-memories@9c800000 {
-	// 		compatible = "shared-dma-pool";
-	// 		reg = <0x00 0x9c800000 0x00 0x00300000>;
-	// 		no-map;
-	// 	};
-
-	// 	mcu_m4fss_dma_memory_region: m4f-dma-memory@9cb00000 {
-	// 		compatible = "shared-dma-pool";
-	// 		reg = <0x00 0x9cb00000 0x00 0x100000>;
-	// 		no-map;
-	// 	};
-
-	// 	mcu_m4fss_memory_region: m4f-memory@9cc00000 {
-	// 		compatible = "shared-dma-pool";
-	// 		reg = <0x00 0x9cc00000 0x00 0xe00000>;
-	// 		no-map;
-	// 	};
-
-	// 	wkup_r5fss0_core0_dma_memory_region: r5f-dma-memory@9da00000 {
-	// 		compatible = "shared-dma-pool";
-	// 		reg = <0x00 0x9da00000 0x00 0x00100000>;
-	// 		no-map;
-	// 	};
-
-	// 	wkup_r5fss0_core0_memory_region: r5f-memory@9db00000 {
-	// 		compatible = "shared-dma-pool";
-	// 		reg = <0x00 0x9db00000 0x00 0x00c00000>;
-	// 		no-map;
-	// 	};
-
-	// 	lpm_ctx_ddr: lpm-memory@9e700000 {
-	// 		reg = <0x00 0x9e700000 0x00 0x80000>;
-	// 		alignment = <0x1000>;
-	// 	};
-
-	// 	secure_tfa_ddr: tfa@9e780000 {
-	// 		reg = <0x00 0x9e780000 0x00 0x80000>;
-	// 		alignment = <0x1000>;
-	// 		no-map;
-	// 	};
-
-	// 	secure_ddr: optee@9e800000 {
-	// 		reg = <0x00 0x9e800000 0x00 0x01800000>; /* for OP-TEE */
-	// 		alignment = <0x1000>;
-	// 		no-map;
-	// 	};
-	// };
 
 	reserved-memory {
 		#address-cells = <2>;
 		#size-cells = <2>;
 		ranges;
+
+		rtos_ipc_memory_region: ipc-memories@9c800000 {
+			compatible = "shared-dma-pool";
+			reg = <0x00 0x9c800000 0x00 0x00300000>;
+			no-map;
+		};
+
+		mcu_m4fss_dma_memory_region: m4f-dma-memory@9cb00000 {
+			compatible = "shared-dma-pool";
+			reg = <0x00 0x9cb00000 0x00 0x100000>;
+			no-map;
+		};
+
+		mcu_m4fss_memory_region: m4f-memory@9cc00000 {
+			compatible = "shared-dma-pool";
+			reg = <0x00 0x9cc00000 0x00 0xe00000>;
+			no-map;
+		};
+
+		wkup_r5fss0_core0_dma_memory_region: r5f-dma-memory@9da00000 {
+			compatible = "shared-dma-pool";
+			reg = <0x00 0x9da00000 0x00 0x00100000>;
+			no-map;
+		};
+
+		wkup_r5fss0_core0_memory_region: r5f-memory@9db00000 {
+			compatible = "shared-dma-pool";
+			reg = <0x00 0x9db00000 0x00 0x00c00000>;
+			no-map;
+		};
+
+		lpm_ctx_ddr: lpm-memory@9e700000 {
+			reg = <0x00 0x9e700000 0x00 0x80000>;
+			alignment = <0x1000>;
+		};
 
 		secure_tfa_ddr: tfa@9e780000 {
 			reg = <0x00 0x9e780000 0x00 0x80000>;
@@ -108,30 +90,6 @@
 			alignment = <0x1000>;
 			no-map;
 		};
-
-		main_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
-			compatible = "shared-dma-pool";
-			reg = <0x00 0xa0000000 0x00 0x200000>;
-			no-map;
-		};
-
-		lpm_ctx_ddr: lpm-memory@a1000000 {
-			reg = <0x00 0xa1000000 0x00 0x40000>;
-			alignment = <0x1000>;
-			no-map;
-		};
-
-		// mcu_m4fss_dma_memory_region: m4f-dma-memory@a4000000 {
-		// 	compatible = "shared-dma-pool";
-		// 	reg = <0x00 0xa4000000 0x00 0x100000>;
-		// 	no-map;
-		// };
-
-		// mcu_m4fss_memory_region: m4f-memory@a4100000 {
-		// 	compatible = "shared-dma-pool";
-		// 	reg = <0x00 0xa4100000 0x00 0xf00000>;
-		// 	no-map;
-		// };
 	};
 
 	vmain_pd: regulator-0 {
@@ -290,6 +248,13 @@
 		pinctrl-single,pins = <
 			AM62X_IOPAD(0x1e0, PIN_INPUT_PULLUP, 0) /* (B16) I2C0_SCL */
 			AM62X_IOPAD(0x1e4, PIN_INPUT_PULLUP, 0) /* (A16) I2C0_SDA */
+		>;
+	};
+
+	main_i2c1_pins_default: main-i2c1-pins-default {
+		pinctrl-single,pins = <
+			AM62X_IOPAD(0x1e8, PIN_INPUT_PULLUP, 0) /* (B17) I2C1_SCL */
+			AM62X_IOPAD(0x1ec, PIN_INPUT_PULLUP, 0) /* (A17) I2C1_SDA */
 		>;
 	};
 
@@ -504,160 +469,27 @@
 &wkup_i2c0 {
 	status = "disabled";
 };
-/*
+
 &main_i2c0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&main_i2c0_pins_default>;
 	clock-frequency = <400000>;
-
-	typec_pd: usb-pd@3f {
-		compatible = "ti,tps6598x";
-		reg = <0x3f>;
-
-		connector {
-			ports {
-				#address-cells = <1>;
-				#size-cells = <0>;
-
-				port@1 {
-					reg = <1>;
-
-					usb_con_hs: endpoint {
-						remote-endpoint = <&typec_hs>;
-					};
-				};
-			};
-		};
-	};
 };
-*/
-&main_i2c0 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&main_i2c0_pins_default>;
-	clock-frequency = <400000>;
-	status = "disabled";
 
-	// sii9022: sii9022@3b {
-	// 	#sound-dai-cells = <0>;
-	// 	compatible = "sil,sii9022";
-	// 	reg = <0x3b>;
-
-	// 	clocks = <&hdmi_mstrclk>;
-	// 	clock-names = "mclk";
-
-	// 	// interrupt-parent = <&exp1>;
-	// 	interrupts = <16 IRQ_TYPE_EDGE_FALLING>;
-
-	// 	sil,i2s-data-lanes = < 0 >;
-
-	// 	ports {
-	// 		#address-cells = <1>;
-	// 		#size-cells = <0>;
-
-	// 		port@0 {
-	// 			reg = <0>;
-
-	// 			sii9022_in: endpoint {
-	// 				remote-endpoint = <&dpi1_out>;
-	// 			};
-	// 		};
-
-	// 		port@1 {
-	// 			reg = <1>;
-
-	// 			sii9022_out: endpoint {
-	// 				remote-endpoint = <&hdmi_connector_in>;
-	// 			};
-	// 		};
-	// 	};
-	// };
-};
-/*
 &main_i2c1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&main_i2c1_pins_default>;
 	clock-frequency = <100000>;
 
-	exp1: gpio@22 {
-		compatible = "ti,tca6424";
-		reg = <0x22>;
-		gpio-controller;
+	at9555: at9555@20 {
+		compatible = "analogtek,at9555";
+		reg = <0x20>;
 		#gpio-cells = <2>;
-		gpio-line-names = "GPIO_CPSW2_RST", "GPIO_CPSW1_RST",
-				   "PRU_DETECT", "MMC1_SD_EN",
-				   "VPP_LDO_EN", "EXP_PS_3V3_En",
-				   "EXP_PS_5V0_En", "EXP_HAT_DETECT",
-				   "GPIO_AUD_RSTn", "GPIO_eMMC_RSTn",
-				   "UART1_FET_BUF_EN", "WL_LT_EN",
-				   "GPIO_HDMI_RSTn", "CSI_GPIO1",
-				   "CSI_GPIO2", "PRU_3V3_EN",
-				   "HDMI_INTn", "TEST_GPIO2",
-				   "MCASP1_FET_EN", "MCASP1_BUF_BT_EN",
-				   "MCASP1_FET_SEL", "UART1_FET_SEL",
-				   "TSINT#", "IO_EXP_TEST_LED";
-
-		interrupt-parent = <&main_gpio1>;
-		interrupts = <23 IRQ_TYPE_EDGE_FALLING>;
+		gpio_base = <520>;
 		interrupt-controller;
 		#interrupt-cells = <2>;
-
-		pinctrl-names = "default";
-		pinctrl-0 = <&main_gpio1_ioexp_intr_pins_default>;
-	};
-
-	sii9022: sii9022@3b {
-		#sound-dai-cells = <0>;
-		compatible = "sil,sii9022";
-		reg = <0x3b>;
-
-		clocks = <&hdmi_mstrclk>;
-		clock-names = "mclk";
-
-		interrupt-parent = <&exp1>;
-		interrupts = <16 IRQ_TYPE_EDGE_FALLING>;
-
-		sil,i2s-data-lanes = < 0 >;
-
-		ports {
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			port@0 {
-				reg = <0>;
-
-				sii9022_in: endpoint {
-					remote-endpoint = <&dpi1_out>;
-				};
-			};
-
-			port@1 {
-				reg = <1>;
-
-				sii9022_out: endpoint {
-					remote-endpoint = <&hdmi_connector_in>;
-				};
-			};
-		};
-	};
-
-	tlv320aic3106: audio-codec@1b {
-		#sound-dai-cells = <0>;
-		compatible = "ti,tlv320aic3106";
-		reg = <0x1b>;
-		ai3x-micbias-vg = <1>;		// 2.0V
 		status = "okay";
-
-		// Regulators
-		AVDD-supply = <&vcc_3v3_sys>;
-		IOVDD-supply = <&vcc_3v3_sys>;
-		DRVDD-supply = <&vcc_3v3_sys>;
-		DVDD-supply = <&vcc_1v8>;
 	};
-};
-*/
-
-&main_i2c1 {
-	status = "disabled";	
 };
 
 &main_i2c2 {
@@ -667,14 +499,22 @@
 &main_i2c3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&main_i2c3_pins_default>;
-	clock-frequency = <400000>;
-	status = "okay";
+	clock-frequency = <100000>;
 
 	rtc: rtc@32 {
 		compatible = "epson,rx8025";
 		reg = <0x32>;
 		status = "okay";
     };
+
+	ptn5150: ptn5150@3d {
+		compatible = "nxp,ptn5150";
+		reg = <0x3d>;
+		interrupt-parent = <&at9555>;
+		interrupts = <5 IRQ_TYPE_LEVEL_HIGH>;
+		// vbus-gpios = <&msmgpio 148 GPIO_ACTIVE_HIGH>;
+		status = "okay";
+	};
 };
 
 &sdhci0 {
@@ -801,14 +641,14 @@
 
 &mcu_m4fss {
 	mboxes = <&mailbox0_cluster0 &mbox_m4_0>;
-	// memory-region = <&mcu_m4fss_dma_memory_region>,
-	// 		<&mcu_m4fss_memory_region>;
+	memory-region = <&mcu_m4fss_dma_memory_region>,
+			<&mcu_m4fss_memory_region>;
 };
 
 &wkup_r5fss0_core0 {
 	mboxes = <&mailbox0_cluster0 &mbox_r5_0>;
-	// memory-region = <&wkup_r5fss0_core0_dma_memory_region>,
-	// 		<&wkup_r5fss0_core0_memory_region>;
+	memory-region = <&wkup_r5fss0_core0_dma_memory_region>,
+			<&wkup_r5fss0_core0_memory_region>;
 };
 
 &main_mcan0 {
