@@ -45,6 +45,10 @@ static const struct flash_info gigadevice_parts[] = {
 	{ "gd25q128", INFO(0xc84018, 0, 64 * 1024, 256,
 			   SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ |
 			   SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB) },
+	{ "gd25lx256", INFO(0xc86819, 0, 64 * 1024, 512,
+			   SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ |
+			   SPI_NOR_4B_OPCODES | SPI_NOR_HAS_LOCK |
+			   SPI_NOR_HAS_TB | SPI_NOR_TB_SR_BIT6) },
 	{ "gd25q256", INFO(0xc84019, 0, 64 * 1024, 512,
 			   SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ |
 			   SPI_NOR_4B_OPCODES | SPI_NOR_HAS_LOCK |

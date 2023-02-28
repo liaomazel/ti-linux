@@ -167,12 +167,12 @@
 
 			partition@800000 {
 				label = "ospi.rootfs";
-				reg = <0x800000 0x37c0000>;
+				reg = <0x800000 0x17c0000>;
 			};
 
 			partition@3fc0000 {
 				label = "ospi.phypattern";
-				reg = <0x3fc0000 0x40000>;
+				reg = <0x1fc0000 0x40000>;
 			};
 		};
 	};
