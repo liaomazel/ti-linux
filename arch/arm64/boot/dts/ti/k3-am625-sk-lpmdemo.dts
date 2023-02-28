@@ -127,18 +127,18 @@
 	status = "disabled";
 };
 
-// &hdmi_mstrclk {
-// 	status = "disabled";
-// };
+&hdmi_mstrclk {
+	status = "disabled";
+};
 
-// &hdmi {
-// 	status = "disabled";
-// };
+&hdmi {
+	status = "disabled";
+};
 
-// &sii9022 {
-// 	status = "disabled";
-// };
+&sii9022 {
+	status = "disabled";
+};
 
-// &tlv320aic3106 {
+// &sgtl5000 {
 // 	status = "disabled";
 // };

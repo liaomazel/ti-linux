@@ -272,8 +272,8 @@
 
 	main_i2c3_pins_default: main-i2c3-pins-default {
 		pinctrl-single,pins = <
-			AM62X_IOPAD(0x1d0, PIN_INPUT_PULLUP, 1) /* (A15) UART0_CTSn.I2C3_SCL */
-			AM62X_IOPAD(0x1d4, PIN_INPUT_PULLUP, 1) /* (B15) UART0_RTSn.I2C3_SDA */
+			AM62X_IOPAD(0x1d0, PIN_INPUT_PULLUP, 2) /* (A15) UART0_CTSn.I2C3_SCL */
+			AM62X_IOPAD(0x1d4, PIN_INPUT_PULLUP, 2) /* (B15) UART0_RTSn.I2C3_SDA */
 		>;
 	};
 
@@ -554,7 +554,6 @@
 	pinctrl-0 = <&main_i2c1_pins_default>;
 	clock-frequency = <400000>;
 	
-
 	at9555: at9555@20 {
 		compatible = "analogtek,at9555";
 		reg = <0x20>;
@@ -574,9 +573,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&main_i2c3_pins_default>;
 	clock-frequency = <400000>;
-	// interrupt-controller;
-	// #interrupt-cells = <2>;
-
+	
 	rtc: rtc@32 {
 		compatible = "epson,rx8025";
 		reg = <0x32>;
