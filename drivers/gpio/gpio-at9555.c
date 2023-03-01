@@ -158,6 +158,7 @@ static int at9555_gpio_probe(struct i2c_client *client,
     struct at9555_gpio *gpio;
 
     // printk(KERN_INFO "i2c at9555 probe\n");
+    printk("myir i2c_gpio probe\n");
     if (client->dev.of_node) {
         pdata = at9555_parse_dt(client->dev.of_node);
     } else {
