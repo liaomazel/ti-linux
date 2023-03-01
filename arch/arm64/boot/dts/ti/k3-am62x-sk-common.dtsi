@@ -407,6 +407,12 @@
 		>;
 	};
 
+	ptn5150_vbus_pins_default: ptn5150-vbus-pins-default {
+		pinctrl-single,pins = <
+			AM62X_IOPAD(0x254, PIN_OUTPUT, 7) /* (C20) USB0_DRVVBUS.GPIO1_50 */
+		>;
+	};
+
 	vdd_sd_dv_pins_default: vdd-sd-dv-pins-default {
 		pinctrl-single,pins = <
 			AM62X_IOPAD(0x07c, PIN_OUTPUT, 7) /* (P25) GPMC0_CLK.GPIO0_31 */
@@ -580,12 +586,14 @@
 		status = "okay";
     };
 
-	ptn5150: ptn5150@3d {
+	ptn5150@3d {
 		compatible = "nxp,ptn5150";
 		reg = <0x3d>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&ptn5150_vbus_pins_default>;
 		interrupt-parent = <&at9555>;
 		interrupts = <5 IRQ_TYPE_LEVEL_HIGH>;
-		// vbus-gpios = <&msmgpio 148 GPIO_ACTIVE_HIGH>;
+		vbus-gpios = <&main_gpio1 50 GPIO_ACTIVE_HIGH>;
 		status = "okay";
 	};
 };
