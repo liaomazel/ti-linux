@@ -106,12 +106,12 @@
 
 
 /* regulator-5 */
-&wlan_lten {
+&wlan_reg_on {
 	status = "disabled";
 };
 
 /* regulator-6 */
-&wlan_en {
+&wlan_wkupen {
 	status = "disabled";
 };
 /* regulator-7 */
