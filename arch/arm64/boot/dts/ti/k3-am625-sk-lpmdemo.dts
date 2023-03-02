@@ -111,9 +111,9 @@
 };
 
 /* regulator-6 */
-&wlan_wkupen {
-	status = "disabled";
-};
+// &wlan_wkupen {
+// 	status = "disabled";
+// };
 /* regulator-7 */
 &vcc_1v8 {
 	status = "disabled";
