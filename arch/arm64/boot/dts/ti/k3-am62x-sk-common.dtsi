@@ -7,7 +7,15 @@
 
 / {
 	aliases {
+		serial0 = &wkup_uart0;
+		serial1 = &mcu_uart0;
 		serial2 = &main_uart0;
+		serial3 = &main_uart1;
+		serial4 = &main_uart2;
+		serial5 = &main_uart3;
+		serial6 = &main_uart4;
+		serial7 = &main_uart5;
+		serial8 = &main_uart6;
 		mmc0 = &sdhci0;
 		mmc1 = &sdhci1;
 		mmc2 = &sdhci2;
@@ -150,7 +158,7 @@
 			 <3300000 0x1>;
 	};*/
 
-	wlan_reg_on: regulator-5 {
+	wlan_reg_on: regulator-4 {
 		compatible = "regulator-fixed";
 		regulator-name = "wlan_reg_on";
 		regulator-min-microvolt = <3300000>;
@@ -164,19 +172,7 @@
 		gpios = <&mcu_gpio0 15 GPIO_ACTIVE_HIGH>;
 	};
 
-	// wlan_wkupen: regulator-6 {
-	// 	compatible = "regulator-fixed";
-	// 	regulator-name = "wlan_wkupen";
-	// 	regulator-min-microvolt = <3300000>;
-	// 	regulator-max-microvolt = <3300000>;
-	// 	enable-active-high;
-	// 	regulator-always-on;
-	// 	regulator-boot-on;
-	// 	vin-supply = <&vcc_3v3_sys>;
-	// 	gpios = <&at9555 2 GPIO_ACTIVE_HIGH>;
-	// };
-
-	vcc_1v8: regulator-7 {
+	vcc_1v8: regulator-5 {
 		/* output of TPS6282518DMQ */
 		compatible = "regulator-fixed";
 		regulator-name = "vcc_1v8";
@@ -185,6 +181,20 @@
 		vin-supply = <&vcc_3v3_sys>;
 		regulator-always-on;
 		regulator-boot-on;
+	};
+
+	lvds_power: regulator-6 {
+		compatible = "regulator-fixed";
+		regulator-name = "lvds_power";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		enable-active-high;
+		regulator-always-on;
+		regulator-boot-on;
+		vin-supply = <&vcc_5v0>;
+		pinctrl-names = "default";
+		pinctrl-1 = <&mcu_lvds_power_pins_default>;
+		gpios = <&mcu_gpio0 4 GPIO_ACTIVE_HIGH>;
 	};
 
 	tlv320_mclk: clk-0 {
@@ -249,16 +259,16 @@
 		clock-frequency = <12288000>;
 	};
 
-	hdmi: connector {
-		compatible = "hdmi-connector";
-		label = "hdmi";
-		type = "a";
-		port {
-			hdmi_connector_in: endpoint {
-				remote-endpoint = <&sii9022_out>;
-			};
-		};
-	};
+	// hdmi: connector {
+	// 	compatible = "hdmi-connector";
+	// 	label = "hdmi";
+	// 	type = "a";
+	// 	port {
+	// 		hdmi_connector_in: endpoint {
+	// 			remote-endpoint = <&sii9022_out>;
+	// 		};
+	// 	};
+	// };
 
 	clk_ov5640_fixed: ov5640-xclk {
 		compatible = "fixed-clock";
@@ -460,6 +470,31 @@
 		>;
 	};
 
+	main_oldi0_pins_default: main-oldi0-pins-default {
+		pinctrl-single,pins = <
+			AM62X_IOPAD(0x0260, PIN_OUTPUT, 0) /* (AA5) OLDI0_A0N */
+			AM62X_IOPAD(0x025c, PIN_OUTPUT, 0) /* (Y6) OLDI0_A0P */
+			AM62X_IOPAD(0x0268, PIN_OUTPUT, 0) /* (AD3) OLDI0_A1N */
+			AM62X_IOPAD(0x0264, PIN_OUTPUT, 0) /* (AB4) OLDI0_A1P */
+			AM62X_IOPAD(0x0270, PIN_OUTPUT, 0) /* (Y8) OLDI0_A2N */
+			AM62X_IOPAD(0x026c, PIN_OUTPUT, 0) /* (AA8) OLDI0_A2P */
+			AM62X_IOPAD(0x0278, PIN_OUTPUT, 0) /* (AB6) OLDI0_A3N */
+			AM62X_IOPAD(0x0274, PIN_OUTPUT, 0) /* (AA7) OLDI0_A3P */
+			AM62X_IOPAD(0x0280, PIN_OUTPUT, 0) /* (AC6) OLDI0_A4N */
+			AM62X_IOPAD(0x027c, PIN_OUTPUT, 0) /* (AC5) OLDI0_A4P */
+			AM62X_IOPAD(0x0288, PIN_OUTPUT, 0) /* (AE5) OLDI0_A5N */
+			AM62X_IOPAD(0x0284, PIN_OUTPUT, 0) /* (AD6) OLDI0_A5P */
+			AM62X_IOPAD(0x0290, PIN_OUTPUT, 0) /* (AE6) OLDI0_A6N */
+			AM62X_IOPAD(0x028c, PIN_OUTPUT, 0) /* (AD7) OLDI0_A6P */
+			AM62X_IOPAD(0x0298, PIN_OUTPUT, 0) /* (AD8) OLDI0_A7N */
+			AM62X_IOPAD(0x0294, PIN_OUTPUT, 0) /* (AE7) OLDI0_A7P */
+			AM62X_IOPAD(0x02a0, PIN_OUTPUT, 0) /* (AD4) OLDI0_CLK0N */
+			AM62X_IOPAD(0x029c, PIN_OUTPUT, 0) /* (AE3) OLDI0_CLK0P */
+			AM62X_IOPAD(0x02a8, PIN_OUTPUT, 0) /* (AE4) OLDI0_CLK1N */
+			AM62X_IOPAD(0x02a4, PIN_OUTPUT, 0) /* (AD5) OLDI0_CLK1P */
+		>;
+	};
+
 	vdd_sd_dv_pins_default: vdd-sd-dv-pins-default {
 		pinctrl-single,pins = <
 			AM62X_IOPAD(0x07c, PIN_OUTPUT, 7) /* (P25) GPMC0_CLK.GPIO0_31 */
@@ -498,12 +533,6 @@
 		>;
 	};
 
-	main_bkl_en_pins_default: main-bkl-en-pins-default {
-		pinctrl-single,pins = <
-			AM62X_IOPAD(0x01f0, PIN_OUTPUT_PULLUP, 7) /* (A18) EXT_REFCLK1.GPIO1_30 */
-		>;
-	};
-
 	ptn5150_vbus_pins_default: ptn5150-vbus-pins-default {
 		pinctrl-single,pins = <
 			AM62X_IOPAD(0x254, PIN_OUTPUT, 7) /* (C20) USB0_DRVVBUS.GPIO1_50 */
@@ -527,8 +556,7 @@
 
 &mcu_gpio0 {
 	pinctrl-names ="default";
-	pinctrl-0=<&mcu_wlan_reg_on_pins_default
-			&mcu_lvds_power_pins_default>;
+	pinctrl-0=<&mcu_wlan_reg_on_pins_default &mcu_lvds_power_pins_default>;
 	status = "okay";
 };
 
@@ -586,43 +614,44 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&main_i2c0_pins_default>;
 	clock-frequency = <400000>;
+	status = "disabled";
 
-	sii9022: sii9022@3b {
-		#sound-dai-cells = <0>;
-		compatible = "sil,sii9022";
-		reg = <0x3b>;
+	// sii9022: sii9022@3b {
+	// 	#sound-dai-cells = <0>;
+	// 	compatible = "sil,sii9022";
+	// 	reg = <0x3b>;
 
-		clocks = <&hdmi_mstrclk>;
-		clock-names = "mclk";
-		iovcc-supply = <&vcc_3v3_sys>;
-		cvcc12-supply = <&vcc_1v8>;
+	// 	clocks = <&hdmi_mstrclk>;
+	// 	clock-names = "mclk";
+	// 	iovcc-supply = <&vcc_3v3_sys>;
+	// 	cvcc12-supply = <&vcc_1v8>;
 
-		// interrupt-parent = <&exp1>;
-		// interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
+	// 	// interrupt-parent = <&exp1>;
+	// 	// interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
 
-		sil,i2s-data-lanes = < 0 >;
+	// 	sil,i2s-data-lanes = < 0 >;
 
-		ports {
-			#address-cells = <1>;
-			#size-cells = <0>;
+	// 	ports {
+	// 		#address-cells = <1>;
+	// 		#size-cells = <0>;
 
-			port@0 {
-				reg = <0>;
+	// 		port@0 {
+	// 			reg = <0>;
 
-				sii9022_in: endpoint {
-					remote-endpoint = <&dpi1_out>;
-				};
-			};
+	// 			sii9022_in: endpoint {
+	// 				remote-endpoint = <&dpi1_out>;
+	// 			};
+	// 		};
 
-			port@1 {
-				reg = <1>;
+	// 		port@1 {
+	// 			reg = <1>;
 
-				sii9022_out: endpoint {
-					remote-endpoint = <&hdmi_connector_in>;
-				};
-			};
-		};
-	};
+	// 			sii9022_out: endpoint {
+	// 				remote-endpoint = <&hdmi_connector_in>;
+	// 			};
+	// 		};
+	// 	};
+	// };
 
 	sgtl5000: audio-codec@a {
 		compatible = "fsl,sgtl5000";
@@ -669,14 +698,13 @@
 		status = "okay";
     };
 
-	ptn5150@3d {
+	ptn5150: ptn5150@3d {
 		compatible = "nxp,ptn5150";
 		reg = <0x3d>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&ptn5150_vbus_pins_default>;
-		interrupt-parent = <&at9555>;
-		interrupts = <5 IRQ_TYPE_LEVEL_HIGH>;
 		vbus-gpios = <&main_gpio1 50 GPIO_ACTIVE_HIGH>;
+		int-gpios = <&at9555 5 IRQ_TYPE_LEVEL_HIGH>;
 		status = "okay";
 	};
 };
@@ -784,7 +812,8 @@
 
 &dss {
 	pinctrl-names = "default";
-	pinctrl-0 = <&main_dss0_pins_default>;
+	// pinctrl-0 = <&main_dss0_pins_default>;
+	pinctrl-0 = <&main_oldi0_pins_default>;
 };
 
 &dss_ports {
@@ -792,13 +821,13 @@
 	#size-cells = <0>;
 
 	/* VP2: DPI Output */
-	port@1 {
-		reg = <1>;
+	// port@1 {
+	// 	reg = <1>;
 
-		dpi1_out: endpoint {
-			remote-endpoint = <&sii9022_in>;
-		};
-	};
+	// 	dpi1_out: endpoint {
+	// 		remote-endpoint = <&sii9022_in>;
+	// 	};
+	// };
 };
 
 &mcasp0 {
