@@ -37,11 +37,7 @@
 
 			backlight_lvds: backlight-lvds {
 				compatible = "pwm-backlight";
-				pwms = <&epwm0 0 20000 0>;
-				// power-supply = <&lvds_bkl_en>;
-				// pinctrl-names = "default";
-				// pinctrl-0 = <&main_bkl_en_pins_default>;
-				// enable-gpios = <&main_gpio1 30 GPIO_ACTIVE_HIGH>;
+				pwms = <&epwm0 0 100000 0>;
 				brightness-levels = < 0  1  2  3  4  5  6  7  8  9
 									10 11 12 13 14 15 16 17 18 19
 									20 21 22 23 24 25 26 27 28 29
@@ -56,7 +52,7 @@
 				default-brightness-level = <80>;
 			};
 
-			panel_lvds0: panel-lvds0 {
+			panel_lvds: panel-lvds {
 				compatible = "panel-lvds";
 				backlight = <&backlight_lvds>;
 				lable = "LVDS";
@@ -77,16 +73,17 @@
 					vsync-len = <5>;
 					vback-porch = <20>;
 
-					hsync-active = <0>;
-					vsync-active = <1>;
-					de-active = <1>;
-					pixelclk-active = <0>;
+					// hsync-active = <0>;
+					// vsync-active = <1>;
+					// de-active = <1>;
+					// pixelclk-active = <0>;
 				};
 
 				ports {
 					#address-cells = <1>;
 					#size-cells = <0>;
 					port@0 {
+						reg = <0>;
 						lcd_in0: endpoint {
 							remote-endpoint = <&oldi_out0>;
 						};
@@ -175,3 +172,20 @@
 	status = "okay";
 };
 
+&main_i2c1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&main_i2c1_pins_default>;
+	clock-frequency = <400000>;
+	#address-cells = <1>;
+	#size-cells = <0>;
+	
+	ft5x06: ft5x06@38 {
+		compatible = "edt,edt-ft5406";
+		reg = <0x38>;
+		interrupt-parent = <&at9555>;
+		interrupts = <6 IRQ_TYPE_EDGE_FALLING>;
+		touchscreen-size-x=<1024>;
+		touchscreen-size-y=<600>;
+		status = "okay";
+    };
+};

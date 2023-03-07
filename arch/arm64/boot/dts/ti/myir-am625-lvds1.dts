@@ -37,7 +37,7 @@
 
 			backlight_lvds: backlight-lvds {
 				compatible = "pwm-backlight";
-				pwms = <&epwm0 0 20000 0>;
+				pwms = <&epwm0 0 100000 0>;
 				// power-supply = <&lvds_bkl_en>;
 				// pinctrl-names = "default";
 				// pinctrl-0 = <&main_bkl_en_pins_default>;
@@ -56,7 +56,7 @@
 				default-brightness-level = <80>;
 			};
 
-			panel_lvds0: panel-lvds0 {
+			panel_lvds: panel-lvds {
 				compatible = "panel-lvds";
 				backlight = <&backlight_lvds>;
 				lable = "LVDS";
@@ -86,7 +86,8 @@
 				ports {
 					#address-cells = <1>;
 					#size-cells = <0>;
-					port@1 {
+					port@2 {
+						reg = <2>;
 						lcd_in1: endpoint {
 							remote-endpoint = <&oldi_out1>;
 						};
@@ -175,3 +176,22 @@
 	status = "okay";
 };
 
+&main_i2c3 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&main_i2c3_pins_default>;
+	clock-frequency = <400000>;
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	ft5x06: ft5x06@38 {
+		compatible = "edt,edt-ft5406";
+		reg = <0x38>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+		interrupt-parent = <&at9555>;
+		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
+		touchscreen-size-x=<1024>;
+		touchscreen-size-y=<600>;
+		status = "okay";
+    };
+};
