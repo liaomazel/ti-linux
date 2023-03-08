@@ -101,7 +101,6 @@
 	};
 
 	vmain_pd: regulator-0 {
-		/* TPS65988 PD CONTROLLER OUTPUT */
 		compatible = "regulator-fixed";
 		regulator-name = "vmain_pd";
 		regulator-min-microvolt = <5000000>;
@@ -111,7 +110,6 @@
 	};
 
 	vcc_5v0: regulator-1 {
-		/* Output of TPS630702 */
 		compatible = "regulator-fixed";
 		regulator-name = "vcc_5v0";
 		regulator-min-microvolt = <5000000>;
@@ -122,7 +120,6 @@
 	};
 
 	vcc_3v3_sys: regulator-2 {
-		/* output of LM61460-Q1 */
 		compatible = "regulator-fixed";
 		regulator-name = "vcc_3v3_sys";
 		regulator-min-microvolt = <3300000>;
@@ -133,7 +130,6 @@
 	};
 
 	vdd_mmc1: regulator-3 {
-		/* TPS22918DBVR */
 		compatible = "regulator-fixed";
 		regulator-name = "vdd_mmc1";
 		regulator-min-microvolt = <3300000>;
@@ -141,7 +137,6 @@
 		regulator-boot-on;
 		enable-active-high;
 		vin-supply = <&vcc_3v3_sys>;
-		// gpio = <&exp1 3 GPIO_ACTIVE_HIGH>;
 	};
 
 	/*vdd_sd_dv: regulator-4 {
@@ -158,6 +153,26 @@
 			 <3300000 0x1>;
 	};*/
 
+	vdd_sd_dv: regulator-sd {
+		compatible = "regulator-fixed";
+		regulator-name = "vdd_sd_dv";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-boot-on;
+		enable-active-high;
+		vin-supply = <&vcc_3v3_sys>;
+	};
+
+	vdd_wl_dv: regulator-wl {
+		compatible = "regulator-fixed";
+		regulator-name = "vdd_wl_dv";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-boot-on;
+		enable-active-high;
+		vin-supply = <&vcc_3v3_sys>;
+	};
+
 	wlan_reg_on: regulator-4 {
 		compatible = "regulator-fixed";
 		regulator-name = "wlan_reg_on";
@@ -173,7 +188,6 @@
 	};
 
 	vcc_1v8: regulator-5 {
-		/* output of TPS6282518DMQ */
 		compatible = "regulator-fixed";
 		regulator-name = "vcc_1v8";
 		regulator-min-microvolt = <1800000>;
@@ -197,27 +211,50 @@
 		gpios = <&mcu_gpio0 4 GPIO_ACTIVE_HIGH>;
 	};
 
-	tlv320_mclk: clk-0 {
-		#clock-cells = <0>;
+	hdmi_mstrclk: hdmi-mstrclk {
 		compatible = "fixed-clock";
+		#clock-cells = <0>;
 		clock-frequency = <12288000>;
+	};
+
+	// hdmi: connector {
+	// 	compatible = "hdmi-connector";
+	// 	label = "hdmi";
+	// 	type = "a";
+	// 	port {
+	// 		hdmi_connector_in: endpoint {
+	// 			remote-endpoint = <&sii9022_out>;
+	// 		};
+	// 	};
+	// };
+
+	clk_ov5640_fixed: ov5640-xclk {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <24000000>;
+	};
+
+	sgtl5000_mclk: sgtl5000-mclk {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <11289600>;
 	};
 
 	codec_audio: sound {
 		compatible = "simple-audio-card";
 		simple-audio-card,name = "AM62x-SKEVM";
 		simple-audio-card,widgets =
-			"Headphone",	"Headphone Jack",
-			"Line",	"Line In",
-			"Microphone",	"Microphone Jack";
+				"Microphone", "Microphone Jack",
+				"Headphone", "Headphone Jack",
+				"Speaker", "Speaker Ext",
+				"Line", "Line In Jack";
 		simple-audio-card,routing =
-			"Headphone Jack",	"HPLOUT",
-			"Headphone Jack",	"HPROUT",
-			"LINE1L",		"Line In",
-			"LINE1R",		"Line In",
-			"MIC3R",		"Microphone Jack",
-			"Microphone Jack",	"Mic Bias";
-		simple-audio-card,format = "dsp_b";
+				"MIC_IN", "Microphone Jack",
+				"Microphone Jack", "Mic Bias",
+				"LINE_IN", "Line In Jack",
+				"Headphone Jack", "HP_OUT",
+				"Speaker Ext", "LINE_OUT";
+		simple-audio-card,format = "i2s";
 		simple-audio-card,bitclock-master = <&sound_master>;
 		simple-audio-card,frame-master = <&sound_master>;
 		simple-audio-card,bitclock-inversion;
@@ -251,35 +288,6 @@
 		compatible = "ti,omap-dmtimer-pwm";
 		#pwm-cells = <3>;
 		ti,timers = <&main_timer7>;
-	};
-
-	hdmi_mstrclk: hdmi-mstrclk {
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <12288000>;
-	};
-
-	// hdmi: connector {
-	// 	compatible = "hdmi-connector";
-	// 	label = "hdmi";
-	// 	type = "a";
-	// 	port {
-	// 		hdmi_connector_in: endpoint {
-	// 			remote-endpoint = <&sii9022_out>;
-	// 		};
-	// 	};
-	// };
-
-	clk_ov5640_fixed: ov5640-xclk {
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <24000000>;
-	};
-
-	sgtl5000_mclk: sgtl5000-mclk {
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <12000000>;
 	};
 };
 
@@ -524,12 +532,16 @@
 
 	main_mcasp0_pins_default: main-mcasp0-pins-default {
 		pinctrl-single,pins = <
-			AM62X_IOPAD(0x01a4, PIN_OUTPUT, 0) /* (B20) MCASP0_ACLKX.MCASP0_ACLKX */
-			AM62X_IOPAD(0x01a8, PIN_OUTPUT, 0) /* (D20) MCASP0_AFSX.MCASP0_AFSX */
-			AM62X_IOPAD(0x01a0, PIN_OUTPUT, 0) /* (E18) MCASP0_AXR0.MCASP0_AXR0 */
-			AM62X_IOPAD(0x019c, PIN_OUTPUT, 0) /* (B18) MCASP0_AXR1.MCASP0_AXR1 */
-			AM62X_IOPAD(0x0094, PIN_OUTPUT, 0) /* (N20) GPMC0_BE1n.GPMC0_BE1n */
-			
+			AM62X_IOPAD(0x01a4, PIN_INPUT, 0) /* (B20) MCASP0_ACLKX.MCASP0_ACLKX */
+			AM62X_IOPAD(0x01a8, PIN_INPUT, 0) /* (D20) MCASP0_AFSX.MCASP0_AFSX */
+			AM62X_IOPAD(0x01a0, PIN_INPUT, 0) /* (E18) MCASP0_AXR0.MCASP0_AXR0 */
+			AM62X_IOPAD(0x019c, PIN_OUTPUT, 0) /* (B18) MCASP0_AXR1.MCASP0_AXR1 */	
+		>;
+	};
+
+	main_audio_pins_default: main-audio-pins-default {
+		pinctrl-single,pins = <
+			AM62X_IOPAD(0x0094, PIN_OUTPUT, 7) /* (N20) GPMC0_BE1n.GPIO0_36 */
 		>;
 	};
 
@@ -538,9 +550,23 @@
 			AM62X_IOPAD(0x254, PIN_OUTPUT, 7) /* (C20) USB0_DRVVBUS.GPIO1_50 */
 		>;
 	};
+
+	main_tps65219_int_pins_default: main-tps65219-int-pins-default {
+		pinctrl-single,pins = <
+			AM62X_IOPAD(0x01f4, PIN_INPUT, 7) /* (D16) EXTINTn.GPIO1_31 */
+		>;
+	};
 };
 
 &mcu_pmx0 {
+
+	mcu_i2c0_pins_default: mcu-i2c0-pins-default {
+		pinctrl-single,pins = <
+			AM62X_MCU_IOPAD(0x0044, PIN_INPUT, 0) /* (A8) MCU_I2C0_SCL */
+			AM62X_MCU_IOPAD(0x0048, PIN_INPUT, 0) /* (D10) MCU_I2C0_SDA */
+		>;
+	};
+
 	mcu_wlan_reg_on_pins_default: mcu-wl-reg-on-pins-default {
 		pinctrl-single,pins = <
 			AM62X_MCU_IOPAD(0x003c, PIN_OUTPUT_PULLUP, 7) /* (E5) MCU_MCAN1_TX.MCU_GPIO0_15 */
@@ -552,11 +578,32 @@
 			AM62X_MCU_IOPAD(0x0010, PIN_OUTPUT_PULLUP, 7) /* (C9) MCU_SPI0_D1.MCU_GPIO0_4 */
 		>;
 	};
+
+	mcu_run_led_pins_default: mymcugpio1-pins-default {
+		pinctrl-single,pins = <
+			AM62X_MCU_IOPAD(0x0040, PIN_INPUT, 7) /* (D4) MCU_MCAN1_RX.MCU_GPIO0_16 */
+		>;
+	};
+
+	mcu_pmic_active_pins_default: mcu-pmic-active-pins-default {
+		pinctrl-single,pins = <
+			AM62X_MCU_IOPAD(0x0080, PIN_INPUT, 7) /* (B7) PMIC_LPM_EN0.MCU_GPIO0_22 */
+		>;
+	};
 };
 
 &mcu_gpio0 {
 	pinctrl-names ="default";
-	pinctrl-0=<&mcu_wlan_reg_on_pins_default &mcu_lvds_power_pins_default>;
+	pinctrl-0=<&mcu_pmic_active_pins_default
+				&mcu_wlan_reg_on_pins_default 
+				&mcu_lvds_power_pins_default
+				&mcu_run_led_pins_default>;
+	status = "okay";
+};
+
+&main_gpio0 {
+	pinctrl-names ="default";
+	pinctrl-0=<&main_audio_pins_default>;//GPIO0_36
 	status = "okay";
 };
 
@@ -603,7 +650,92 @@
 };
 
 &mcu_i2c0 {
-	status = "disabled";
+	pinctrl-names = "default";
+	pinctrl-0 = <&mcu_i2c0_pins_default>;
+	clock-frequency = <400000>;
+	status = "okay";
+
+	eeprom: 24c32@50 {
+		compatible = "atmel,24c32";
+		reg = <0x50>;
+		pagesize = <32>;
+	};
+
+	tps65219: pmic@30 {
+		compatible = "ti,tps65219";
+		reg = <0x30>;
+		buck1-supply = <&vcc_3v3_sys>;
+		buck2-supply = <&vcc_3v3_sys>;
+		buck3-supply = <&vcc_3v3_sys>;
+		ldo1-supply = <&vcc_3v3_sys>;
+		ldo2-supply = <&buck2_reg>;
+		ldo3-supply = <&vcc_3v3_sys>;
+		ldo4-supply = <&vcc_3v3_sys>;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&main_tps65219_int_pins_default>;
+
+		interrupt-parent = <&gic500>;
+        interrupts = <GIC_SPI 224 IRQ_TYPE_LEVEL_HIGH>;
+		interrupt-controller;
+		#interrupt-cells = <1>;
+
+		regulators {
+			buck1_reg: buck1 {
+				regulator-name = "VDD_CORE";
+				regulator-min-microvolt = <750000>;
+				regulator-max-microvolt = <750000>;
+				regulator-boot-on;
+				regulator-always-on;
+			};
+
+			buck2_reg: buck2 {
+				regulator-name = "VCC1V8";
+				regulator-min-microvolt = <3300000>;
+				regulator-max-microvolt = <3300000>;
+				regulator-boot-on;
+				regulator-always-on;
+			};
+
+			buck3_reg: buck3 {
+				regulator-name = "VDD_LPDDR4";
+				regulator-min-microvolt = <1200000>;
+				regulator-max-microvolt = <1200000>;
+				regulator-boot-on;
+				regulator-always-on;
+			};
+
+			ldo1_reg: ldo1 {
+				regulator-name = "VDDSHV_SD_IO_PMIC";
+				regulator-min-microvolt = <33000000>;
+				regulator-max-microvolt = <33000000>;
+			};
+
+			ldo2_reg: ldo2 {
+				regulator-name = "VDDAR_CORE";
+				regulator-min-microvolt = <850000>;
+				regulator-max-microvolt = <850000>;
+				regulator-boot-on;
+				regulator-always-on;
+			};
+
+			ldo3_reg: ldo3 {
+				regulator-name = "VDDA_1V8";
+				regulator-min-microvolt = <18000000>;
+				regulator-max-microvolt = <18000000>;
+				regulator-boot-on;
+				regulator-always-on;
+			};
+
+			ldo4_reg: ldo4 {
+				regulator-name = "VDD_PHY_2V5";
+				regulator-min-microvolt = <25000000>;
+				regulator-max-microvolt = <25000000>;
+				regulator-boot-on;
+				regulator-always-on;
+			};
+		};
+	};
 };
 
 &wkup_i2c0 {
@@ -655,12 +787,9 @@
 
 	sgtl5000: audio-codec@a {
 		compatible = "fsl,sgtl5000";
-		reg = <0x0a>;
+		reg = <0xa>;
 		#sound-dai-cells = <0>;
 		clocks = <&sgtl5000_mclk>;
-		// micbias-resistor-k-ohms = <2>;
-		micbias-resistor-k-ohms = <4>;
-		micbias-voltage-m-volts = <2250>;
 		VDDA-supply = <&vcc_3v3_sys>;
 		VDDIO-supply = <&vcc_3v3_sys>;
 		VDDD-supply = <&vcc_1v8>;
@@ -719,7 +848,7 @@
 &sdhci1 {
 	/* SD/MMC */
 	vmmc-supply = <&vdd_mmc1>;
-	// vqmmc-supply = <&vdd_sd_dv>;
+	vqmmc-supply = <&vdd_sd_dv>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&main_mmc1_pins_default>;
 	ti,driver-strength-ohm = <50>;
@@ -728,6 +857,7 @@
 
 &sdhci2 {
 	vmmc-supply = <&wlan_reg_on>;
+	vqmmc-supply = <&vdd_wl_dv>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&main_mmc2_pins_default>;
 	bus-width = <4>;
@@ -740,17 +870,6 @@
 	assigned-clocks = <&k3_clks 157 158>;
 	assigned-clock-parents = <&k3_clks 157 160>;
 	status = "okay";
-
-	// #address-cells = <1>;
-	// #size-cells = <0>;
-	// wlcore: wlcore@2 {
-	// 	compatible = "ti,wl1837";
-	// 	reg = <2>;
-	// 	pinctrl-names = "default";
-	// 	pinctrl-0 = <&main_wlirq_pins_default>;
-	// 	interrupt-parent = <&main_gpio0>;
-	// 	interrupts = <72 IRQ_TYPE_EDGE_FALLING>;
-	// };
 };
 
 &usbss0 {
@@ -831,7 +950,7 @@
 };
 
 &mcasp0 {
-	status = "disabled";
+	status = "okay";
 	#sound-dai-cells = <0>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&main_mcasp0_pins_default>;
@@ -840,10 +959,10 @@
 	tdm-slots = <2>;
 	/* 16 serializers */
 	serial-dir = <  /* 0: INACTIVE, 1: TX, 2: RX */
-		0 0 1 2
-		0 0 0 0
-		0 0 0 0
-		0 0 0 0
+	       2 1 0 0
+	       0 0 0 0
+	       0 0 0 0
+	       0 0 0 0
 	>;
 	tx-num-evt = <32>;
 	rx-num-evt = <32>;
