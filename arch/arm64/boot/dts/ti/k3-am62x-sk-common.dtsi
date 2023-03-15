@@ -4,7 +4,7 @@
  *
  * Copyright (C) 2021-2022 Texas Instruments Incorporated - https://www.ti.com/
  */
-
+#include <dt-bindings/input/input.h>
 / {
 	aliases {
 		serial0 = &wkup_uart0;
@@ -273,22 +273,37 @@
 	leds {
 		compatible = "pwm-leds";
 
-		led-0 {
-			label = "am62-sk:green:heartbeat";
+		led-user {
+			label = "am62-sk:blue:heartbeat";
 			gpios = <&at9555 10 GPIO_ACTIVE_HIGH>;
 			max-brightness = <255>;
 			linux,default-trigger = "heartbeat";
 			function = LED_FUNCTION_HEARTBEAT;
 			default-state = "off";
 		};
+
+		led-sys {
+			label = "am62-sk:blue:heartbeat";
+			pinctrl-names = "default";
+			pinctrl-1 = <&mcu_run_led_pins_default>;
+			gpios = <&mcu_gpio0 16 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "heartbeat";
+			function = LED_FUNCTION_HEARTBEAT;
+			default-state = "on";
+		};
 	};
 
-	main_pwm7: dmtimer-main-pwm-7 {
-		// pinctrl-0 = <&usr_led_pins_default>;
-		// pinctrl-names = "default";
-		compatible = "ti,omap-dmtimer-pwm";
-		#pwm-cells = <3>;
-		ti,timers = <&main_timer7>;
+	gpio-keys {
+		compatible = "gpio-keys";
+		autorepeat;
+		pinctrl-names = "default";
+		pinctrl-0 = <&main_user_key_pins_default>;
+
+		user: user {
+			label = "GPIO Key USER1";
+			linux,code = <BTN_0>;
+			gpios = <&main_gpio0 71 GPIO_ACTIVE_LOW>;
+		};
 	};
 };
 
@@ -558,10 +573,17 @@
 		>;
 	};
 
-	main_ioexp_intr_pins_default: main-ioexp-intr-pins-default {
+	main_user_key_pins_default: main-user-key-pins-default {
 		pinctrl-single,pins = <
-			 AM62X_IOPAD(0x258, PIN_OUTPUT, 7) /* (F18) SoC_USB1_DRVVBUS.GPIO1_51 */
+			AM62X_IOPAD(0x124, PIN_INPUT, 7) /* (A23) MMC2_SDCD.GPIO0_71 */
 		>;
+	};
+
+	main_mcan0_pins_default: main_mcan0_pins_default {
+		pinctrl-single,pins = <
+			AM62X_IOPAD(0x01d8, PIN_OUTPUT, 0) /* (C15) SoC_UART1_DTRn.MCAN0_TX */
+			AM62X_IOPAD(0x01dc, PIN_INPUT, 0) /* (E15) SoC_UART1_RIn.MCAN0_RX */
+		>;		
 	};
 };
 
@@ -611,15 +633,13 @@
 	pinctrl-names ="default";
 	pinctrl-0=<&mcu_pmic_active_pins_default
 				&mcu_wlan_reg_on_pins_default 
-				&mcu_lvds_power_pins_default
-				&mcu_run_led_pins_default>;
+				&mcu_lvds_power_pins_default>;
 	status = "okay";
 };
 
 &main_gpio0 {
 	pinctrl-names ="default";
-	pinctrl-0=<&main_audio_pins_default
-				&main_ioexp_intr_pins_default>;//GPIO0_36
+	pinctrl-0=<&main_audio_pins_default>;
 	status = "okay";
 };
 
@@ -776,7 +796,7 @@
 		iovcc-supply = <&vcc_3v3_sys>;
 		cvcc12-supply = <&vcc_1v8>;
 
-		// interrupt-parent = <&exp1>;
+		// interrupt-parent = <&at9555>;
 		// interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
 
 		sil,i2s-data-lanes = < 0 >;
@@ -1113,7 +1133,9 @@
 };
 
 &main_mcan0 {
-	status = "disabled";
+	pinctrl-names = "default";
+	pinctrl-0 = <&main_mcan0_pins_default>;
+	status = "okay";
 };
 
 &mcu_rti0 {
