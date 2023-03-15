@@ -2820,6 +2820,64 @@ static const struct panel_desc microtips_13_101hieb0hf0_s = {
 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
 };
 
+static const struct drm_display_mode myir_19_inch_lvds_mode = {
+	.clock = 100000,
+	.hdisplay = 1280,
+	.hsync_start = 1280 + 200,
+	.hsync_end = 1280 + 200 + 180,
+	.htotal = 1280 + 200 + 180 + 28,
+	.vdisplay = 1024,
+	.vsync_start = 1024 + 39,
+	.vsync_end = 1024 + 39 + 5,
+	.vtotal = 1024 + 39 + 5 + 6,
+};
+
+static const struct panel_desc myir_19_inch_lvds = {
+	.modes = &myir_19_inch_lvds_mode,
+	.bpc = 8,
+	.num_modes = 1,
+	.size = {
+		.width = 396,
+		.height = 324,
+	},
+	.delay = {
+		.hpd_absent_delay = 200,
+		.unprepare = 200,
+	},
+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
+	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+};
+
+static const struct drm_display_mode myir_7_inch_lvds_mode = {
+	.clock = 80000,
+	.hdisplay = 1024,
+	.hsync_start = 1024 + 176,
+	.hsync_end = 1024 + 176 + 88,
+	.htotal = 1024 + 176 + 88 + 6,
+	.vdisplay = 600,
+	.vsync_start = 600 + 20,
+	.vsync_end = 600 + 20 + 25,
+	.vtotal = 600 + 20 + 25 + 5,
+};
+
+static const struct panel_desc myir_7_inch_lvds = {
+	.modes = &myir_7_inch_lvds_mode,
+	.bpc = 8,
+	.num_modes = 1,
+	.size = {
+		.width = 154,
+		.height = 85,
+	},
+	.delay = {
+		.prepare = 50,
+		.disable = 50,
+	},
+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
+	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+};
+
 static const struct display_timing nec_nl12880bc20_05_timing = {
 	.pixelclock = { 67000000, 71000000, 75000000 },
 	.hactive = { 1280, 1280, 1280 },
@@ -4217,6 +4275,12 @@ static const struct of_device_id platform_of_match[] = {
 	}, {
 		.compatible = "microtips,13-101hieb0hf0-s",
 		.data = &microtips_13_101hieb0hf0_s,
+	}, {
+		.compatible = "myir,19-inch-lvds",
+		.data = &myir_19_inch_lvds,
+	}, {
+		.compatible = "myir,7-inch-lvds",
+		.data = &myir_7_inch_lvds,
 	}, {
 		.compatible = "mitsubishi,aa070mc01-ca1",
 		.data = &mitsubishi_aa070mc01,
