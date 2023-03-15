@@ -96,7 +96,7 @@
 	status = "disabled";
 };
 
-&mcasp1 {
+&mcasp0 {
 	status = "disabled";
 };
 
@@ -139,6 +139,6 @@
 // 	status = "disabled";
 // };
 
-// &sgtl5000 {
-// 	status = "disabled";
-// };
+&sgtl5000 {
+	status = "disabled";
+};
