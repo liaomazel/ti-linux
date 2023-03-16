@@ -839,8 +839,8 @@
 		iovcc-supply = <&vcc_3v3_sys>;
 		cvcc12-supply = <&vcc_1v8>;
 
-		interrupt-parent = <&at9555>;
-		interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
+		// interrupt-parent = <&at9555>;
+		// interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
 
 		sil,i2s-data-lanes = < 0 >;
 
