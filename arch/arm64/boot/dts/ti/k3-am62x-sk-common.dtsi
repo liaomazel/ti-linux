@@ -271,7 +271,7 @@
 	};
 
 	leds {
-		compatible = "pwm-leds";
+		compatible = "gpio-leds";
 
 		led-user {
 			label = "am62-sk:blue:heartbeat";
@@ -659,13 +659,15 @@
 	pinctrl-names ="default";
 	pinctrl-0=<&mcu_pmic_active_pins_default
 				&mcu_wlan_reg_on_pins_default 
-				&mcu_lvds_power_pins_default>;
+				&mcu_lvds_power_pins_default
+				&mcu_run_led_pins_default>;
 	status = "okay";
 };
 
 &main_gpio0 {
 	pinctrl-names ="default";
 	pinctrl-0=<&main_audio_pins_default
+				&main_user_key_pins_default
 				&main_uart4_rst_pins_default
 				&main_uart6_rst_pins_default>;
 	status = "okay";
@@ -1045,8 +1047,7 @@
 
 &dss {
 	pinctrl-names = "default";
-	// pinctrl-0 = <&main_dss0_pins_default>;
-	pinctrl-0 = <&main_oldi0_pins_default>;
+	pinctrl-0 = <&main_dss0_pins_default>;
 };
 
 &dss_ports {
