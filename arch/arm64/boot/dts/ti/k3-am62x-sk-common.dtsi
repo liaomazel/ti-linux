@@ -324,6 +324,32 @@
 		>;
 	};
 
+	main_uart4_pins_default: main-uart4-pins-default {
+		pinctrl-single,pins = <
+			AM62X_IOPAD(0x00b0, PIN_INPUT, 3) /* (K22) GPMC0_CSn2.UART4_RXD */
+			AM62X_IOPAD(0x00b4, PIN_OUTPUT, 3) /* (K24) GPMC0_CSn3.UART4_TXD */
+		>;
+	};
+
+	main_uart4_rst_pins_default: main-uart4-rst-pins-default {
+		pinctrl-single,pins = <
+			AM62X_IOPAD(0x0030, PIN_INPUT, 7) /* (G21) OSPI0_CSn1.GPIO0_12 */
+		>;
+	};
+
+	main_uart6_pins_default: main-uart6-pins-default {
+		pinctrl-single,pins = <
+			AM62X_IOPAD(0x009c, PIN_INPUT, 3) /* (V25) GPMC0_WAIT1.UART6_RXD */
+			AM62X_IOPAD(0x00a0, PIN_OUTPUT, 3) /* (K25) GPMC0_WPn.UART6_TXD */
+		>;
+	};
+
+	main_uart6_rst_pins_default: main-uart6-rst-pins-default {
+		pinctrl-single,pins = <
+			AM62X_IOPAD(0x0258, PIN_INPUT, 7) /* (F18) USB1_DRVVBUS.GPIO1_51 */
+		>;
+	};
+
 	main_i2c0_pins_default: main-i2c0-pins-default {
 		pinctrl-single,pins = <
 			AM62X_IOPAD(0x1e0, PIN_INPUT_PULLUP, 0) /* (B16) I2C0_SCL */
@@ -639,7 +665,9 @@
 
 &main_gpio0 {
 	pinctrl-names ="default";
-	pinctrl-0=<&main_audio_pins_default>;
+	pinctrl-0=<&main_audio_pins_default
+				&main_uart4_rst_pins_default
+				&main_uart6_rst_pins_default>;
 	status = "okay";
 };
 
@@ -674,7 +702,13 @@
 };
 
 &main_uart4 {
-	status = "disabled";
+	pinctrl-names = "default";
+	pinctrl-0 = <&main_uart4_pins_default &main_uart4_rst_pins_default>;
+	rts-gpio = <&main_gpio0 12 GPIO_ACTIVE_HIGH>;
+	rs485-rx-during-tx;
+	rs485-rts-delay = <1 1>;
+	linux,rs485-enabled-at-boot-time;
+	status = "okay";
 };
 
 &main_uart5 {
@@ -682,7 +716,14 @@
 };
 
 &main_uart6 {
-	status = "disabled";
+	pinctrl-names = "default";
+	pinctrl-0 = <&main_uart6_pins_default &main_uart6_rst_pins_default>;
+	rts-gpio = <&main_gpio1 51 GPIO_ACTIVE_HIGH>;
+	rs485-rx-during-tx;
+	rs485-rts-delay = <1 1>;
+	linux,rs485-enabled-at-boot-time;
+	rs485-rts-active-low;
+	status = "okay";
 };
 
 &mcu_i2c0 {
@@ -796,8 +837,8 @@
 		iovcc-supply = <&vcc_3v3_sys>;
 		cvcc12-supply = <&vcc_1v8>;
 
-		// interrupt-parent = <&at9555>;
-		// interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
+		interrupt-parent = <&at9555>;
+		interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
 
 		sil,i2s-data-lanes = < 0 >;
 
