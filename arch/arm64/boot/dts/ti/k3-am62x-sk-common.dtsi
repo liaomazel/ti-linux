@@ -667,7 +667,6 @@
 &main_gpio0 {
 	pinctrl-names ="default";
 	pinctrl-0=<&main_audio_pins_default
-				&main_user_key_pins_default
 				&main_uart4_rst_pins_default
 				&main_uart6_rst_pins_default>;
 	status = "okay";
@@ -705,8 +704,8 @@
 
 &main_uart4 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&main_uart4_pins_default &main_uart4_rst_pins_default>;
-	rts-gpio = <&main_gpio0 12 GPIO_ACTIVE_HIGH>;
+	pinctrl-0 = <&main_uart4_pins_default>;
+	// rts-gpio = <&main_gpio0 12 GPIO_ACTIVE_HIGH>;
 	rs485-rx-during-tx;
 	rs485-rts-delay = <1 1>;
 	linux,rs485-enabled-at-boot-time;
@@ -719,8 +718,8 @@
 
 &main_uart6 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&main_uart6_pins_default &main_uart6_rst_pins_default>;
-	rts-gpio = <&main_gpio1 51 GPIO_ACTIVE_HIGH>;
+	pinctrl-0 = <&main_uart6_pins_default>;
+	// rts-gpio = <&main_gpio1 51 GPIO_ACTIVE_HIGH>;
 	rs485-rx-during-tx;
 	rs485-rts-delay = <1 1>;
 	linux,rs485-enabled-at-boot-time;
