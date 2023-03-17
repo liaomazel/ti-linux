@@ -246,13 +246,13 @@ static int yt8531_led_init(struct phy_device *phydev)
     int ret;
     int val;
 
-    val = ytphy_read_ext(phydev, YT8521_EXTREG_LED1);
+    val = ytphy_read_ext(phydev, YT8521_EXTREG_LED0);
     if (val < 0)
         return val;
 
     /* set when link up and speed is 10/100/1000 make led on  as link led */
     val = 0x180;
-    ret = ytphy_write_ext(phydev, YT8521_EXTREG_LED1, val);
+    ret = ytphy_write_ext(phydev, YT8521_EXTREG_LED0, val);
     if (ret < 0)
         return ret;
 
