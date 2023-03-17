@@ -89,6 +89,5 @@ dtb-$(CONFIG_ARCH_K3) += k3-j721e-fpdlink-imx390-rcm-1-3.dtbo
 
 dtb-$(CONFIG_ARCH_K3) += k3-am62a7-sk.dtb
 
-dtb-$(CONFIG_ARCH_K3) += myir-am625-lvds0.dtbo
-dtb-$(CONFIG_ARCH_K3) += myir-am625-lvds1.dtbo
-dtb-$(CONFIG_ARCH_K3) += myir-am625-lvds-dual.dtbo
+dtb-$(CONFIG_ARCH_K3) += myir-am62x-lvds.dtbo
+dtb-$(CONFIG_ARCH_K3) += myir-am62x-lvds-dual.dtbo
